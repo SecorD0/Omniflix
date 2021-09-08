@@ -1,14 +1,11 @@
 #!/bin/bash
 # $1 - language (RU/EN)
 # $2 - raw JSON output (true/false)
-language="EN"
-raw_output=false
-# Data
+# Data and variables
 node_tcp=$(cat $HOME/.omniflixhub/config/config.toml | grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")")
 status=$(omniflixhubd status --node $node_tcp 2>&1)
 moniker=$(jq -r ".NodeInfo.moniker" <<< $status)
 node_info=$(omniflixhubd query staking validators --node $node_tcp --limit 1500 --output json | jq -r '.validators[] | select(.description.moniker=='\"$moniker\"')')
-# Variables
 identity=$(jq -r ".description.identity" <<< $node_info)
 website=$(jq -r ".description.website" <<< $node_info)
 details=$(jq -r ".description.details" <<< $node_info)
@@ -21,6 +18,7 @@ latest_block_height=$(jq -r ".SyncInfo.latest_block_height" <<< $status)
 catching_up=$(jq -r ".SyncInfo.catching_up" <<< $status)
 delegated=$((`jq -r ".tokens" <<< $node_info`/1000000))
 voting_power=$(jq -r ".ValidatorInfo.VotingPower" <<< $status)
+wallet_address=$(omniflixhubd keys show $omniflix_wallet_name -a)
 # Output
 if [ "$2" = "true" ]; then
 	printf '{"moniker":"%s",
@@ -62,6 +60,8 @@ else
 		echo -e "Делегировано токенов на ноду: \e[40m\e[92m$delegated\e[0m"
 		echo -e "Весомость голоса:             \e[40m\e[92m$voting_power\e[0m"
 		echo -e ""
+		echo -e "Адрес кошелька:               \e[40m\e[92m$wallet_address\e[0m"
+		echo -e ""
 	else
 		echo -e ""
 		echo -e "Moniker:                       \e[40m\e[92m$moniker\e[0m"
@@ -86,6 +86,8 @@ else
 		fi
 		echo -e "Delegated tokens to the node:  \e[40m\e[92m$delegated\e[0m"
 		echo -e "Voting power:                  \e[40m\e[92m$voting_power\e[0m"
+		echo -e ""
+		echo -e "Wallet address:               \e[40m\e[92m$wallet_address\e[0m"
 		echo -e ""
 	fi
 fi
