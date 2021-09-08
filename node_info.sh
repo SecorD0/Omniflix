@@ -6,7 +6,7 @@ raw_output=false
 # Data
 node_tcp=$(cat $HOME/.omniflixhub/config/config.toml | grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")")
 status=$(omniflixhubd status --node $node_tcp 2>&1)
-node_info=$(omniflixhubd query staking validators --limit 1500 --output json | jq -r '.validators[] | select(.description.moniker=='\"$omniflix_moniker\"')')
+node_info=$(omniflixhubd query staking validators --node $node_tcp --limit 1500 --output json | jq -r '.validators[] | select(.description.moniker=='\"$omniflix_moniker\"')')
 # Variables
 moniker=$(jq -r ".NodeInfo.moniker" <<< $status)
 identity=$(jq -r ".description.identity" <<< $node_info)
