@@ -105,7 +105,7 @@ voting_power=`jq -r ".ValidatorInfo.VotingPower" <<< $status`
 wallet_address=`omniflixhubd keys show $omniflix_wallet_name -a`
 balance=`echo "$(omniflixhubd query bank balances $wallet_address -o json --node "$node_tcp" | jq -r ".balances[0].amount")/1000000" | bc -l`
 if [ "$raw_output" = "true" ]; then
-	printf '{"moniker": "%s", "identity": "%s", "website": "%s", "details": "%s", "network": "%s", "version": "%s", "validator_pub_key": "%s", "validator_address": "%s", "jailed": %b, "latest_block_height": %d, "catching_up": %b, "delegated": %.3f, "voting_power": %d, "wallet_address": "%s", "balance": %.3f}\n' \
+	printf_n '{"moniker": "%s", "identity": "%s", "website": "%s", "details": "%s", "network": "%s", "version": "%s", "validator_pub_key": "%s", "validator_address": "%s", "jailed": %b, "latest_block_height": %d, "catching_up": %b, "delegated": %.3f, "voting_power": %d, "wallet_address": "%s", "balance": %.3f}' \
 "$moniker" \
 "$identity" \
 "$website" \
