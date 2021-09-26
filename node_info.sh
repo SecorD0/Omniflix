@@ -37,7 +37,7 @@ while test $# -gt 0; do
 		raw_output="true"
 		shift
 		;;
-	*)
+	*|--)
 		break
 		;;
 	esac
