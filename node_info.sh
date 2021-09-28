@@ -100,10 +100,10 @@ validator_address=`jq -r ".operator_address" <<< $node_info`
 jailed=`jq -r ".jailed" <<< $node_info`
 latest_block_height=`jq -r ".SyncInfo.latest_block_height" <<< $status`
 catching_up=`jq -r ".SyncInfo.catching_up" <<< $status`
-delegated=`echo "$(jq -r ".tokens" <<< $node_info)/1000000" | bc -l`
+delegated=`bc -l <<< "$(jq -r ".tokens" <<< $node_info)/1000000"`
 voting_power=`jq -r ".ValidatorInfo.VotingPower" <<< $status`
 wallet_address=`omniflixhubd keys show $omniflix_wallet_name -a`
-balance=`echo "$(omniflixhubd query bank balances $wallet_address -o json --node "$node_tcp" | jq -r ".balances[0].amount")/1000000" | bc -l`
+balance=`bc -l <<< "$(omniflixhubd query bank balances $wallet_address -o json --node "$node_tcp" | jq -r ".balances[0].amount")/1000000"`
 if [ "$raw_output" = "true" ]; then
 	printf_n '{"moniker": "%s", "identity": "%s", "website": "%s", "details": "%s", "network": "%s", "version": "%s", "validator_pub_key": "%s", "validator_address": "%s", "jailed": %b, "latest_block_height": %d, "catching_up": %b, "delegated": %.3f, "voting_power": %d, "wallet_address": "%s", "balance": %.3f}' \
 "$moniker" \
