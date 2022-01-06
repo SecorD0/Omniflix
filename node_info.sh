@@ -86,7 +86,7 @@ else
 fi
 # Actions
 sudo apt install bc -y &>/dev/null
-node_tcp=`cat $HOME/.omniflixhub/config/config.toml | grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")"`
+node_tcp=`grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")" $HOME/.omniflixhub/config/config.toml`
 status=`omniflixhubd status --node "$node_tcp" 2>&1`
 moniker=`jq -r ".NodeInfo.moniker" <<< $status`
 node_info=`omniflixhubd query staking validators --node "$node_tcp" --limit 1500 --output json | jq -r '.validators[] | select(.description.moniker=='\"$moniker\"')'`
