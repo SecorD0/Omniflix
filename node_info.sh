@@ -24,7 +24,7 @@ while test $# -gt 0; do
 		echo
 		echo -e "${C_LGn}Useful URLs${RES}:"
 		echo -e "https://github.com/SecorD0/Omniflix/blob/main/node_info.sh - script URL (you can send Pull request with new texts to add a language)"
-		echo -e "https://t.me/letskynode — node Community"
+		echo -e "https://t.me/OnePackage — noderun and tech community"
 		echo
 		return 0
 		;;
